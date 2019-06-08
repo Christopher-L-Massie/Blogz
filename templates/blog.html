@@ -8,9 +8,10 @@
     {% else %}
         
             {% for post in blog %}
-                <h1>
+                <a href="blog?id={{post.id}}"><h1>
                     {{post.title}}
                 </h1>
+                </a>
                 <p>
                     {{post.body}}
                 </p>
