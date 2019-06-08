@@ -17,7 +17,7 @@ class Blog(db.Model):
     #current required info when creating a blog post is the blog title and text content
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120))
-    body = db.Column(db.String(500))
+    body = db.Column(db.String(40000))
     
     #initilizes the blog post
     def __init__(self, title, body):
@@ -35,17 +35,19 @@ def index():
 @app.route('/blog', methods=['POST','GET'])
 def blog():
     blog_post = Blog.query.all()
-    
+    newest_post_first = Blog.query.order_by(Blog.id.desc()).all()
+    print(newest_post_first)
     #this line could be better it handles pulling an id if the user has given me one
     if request.method == 'GET':
         blog_id = request.args.get('id')
         #this checks if there is even a blog id argument and then renders a page for the post clicked by the user
         if blog_id:
             requested_post = Blog.query.get(blog_id)
+             
             return render_template('post.html',title="Post",blog_title=requested_post.title,body=requested_post.body)
     
     #this is how the page renders if no arguments are given in the url
-    return render_template('blog.html',title="Blog",blog=blog_post)
+    return render_template('blog.html',title="Blog",blog=newest_post_first)
 
 #renders the new post page where anybody can create a new post for the blog
 @app.route('/newpost', methods=['POST','GET'])
