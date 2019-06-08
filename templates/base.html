@@ -1,13 +1,17 @@
 <!doctype html>
 <html>
-    <head>
+    <head >
         <title>{{title}}</title>
+        <link rel="stylesheet" type="text/css" href='static/styles/styles.css'>
     </head>
 
 <body>
-    <a href='/'>Home Page</a>
-    <br>
-    <a href='/newpost'>Create Post</a>
+    <div class="header">
+        <a href='/newpost'>Create Post</a>
+        <div class="home_page">
+        <a href='/'>Home Page</a>
+        </div>
+    </div>
 
     {% block content %}
     {% endblock %}

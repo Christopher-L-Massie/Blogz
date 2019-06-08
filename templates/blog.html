@@ -1,20 +1,35 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+    <div class="page_title">
     <h1>Build a Blog</h1>
+        
+    </div>
+    
 
     {% if blog|length == 0 %}
     <h1>Blog Content Coming Soon!!</h1>
     {% else %}
-        
+        <div class="spacer">
+        <p></p>
+        </div>
             {% for post in blog %}
-                <a href="blog?id={{post.id}}"><h1>
-                    {{post.title}}
-                </h1>
-                </a>
-                <p>
-                    {{post.body}}
-                </p>
+                
+                <div class="blog_post">
+                    <div class="blog_title">
+                        <a href="blog?id={{post.id}}">
+                            <h1>
+                            {{post.title}}
+                            </h1>
+                        </a>
+                    </div>
+                    <div class="blog_content">
+                        <p>
+                            {{post.body}}
+                        </p>
+                    </div>
+                </div>
             {% endfor %}
 
 

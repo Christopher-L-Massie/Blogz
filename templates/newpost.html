@@ -1,26 +1,35 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <div class="page_title">
     <h1>Create a new blog post</h1>
-    <br>
-    <br>
-    <form method='POST'>
-        <label>
-            Blog Post Title:
-            <input type="text" name="blog_post_title" value='{{blog_post_title}}'/>
-            <p class="error">{{title_error}}</p>
-        </label>
-        <br>
-        <br>
-        <label>
-            Blog Post Content:
-            <input type="text" name="blog_post_content" value='{{blog_post_content}}'/>
-            <p class="error">{{content_error}}</p>
-        </label>
-        <br>
-        <br>
-        <label>
-            <input type="submit" value='Add Blog Post' />
-        </label>
-    </form>
+    </div> 
+    <div class="spacer">
+        <p></p>
+    </div>
+    <div class="post_creator">
+        <form method='POST'>
+            <div class="creator_object">
+                <label>
+                    Blog Post Title<br>
+                    <input type="text" name="blog_post_title" value='{{blog_post_title}}'/>
+                    <p class="error">{{title_error}}</p>
+                </label>
+            </div>
+            <br>
+            <div class="creator_object">
+                <label>
+                    Blog Post Content<br>
+                    <input type="text" name="blog_post_content" value='{{blog_post_content}}'/><br>
+                    <p class="error">{{content_error}}</p>
+                </label>
+            </div>
+            <br>
+            <label>
+                <div class="submit_post">
+                    <input type="submit" value='Add Blog Post' />
+                </div>
+            </label>
+        </form>
+    </div>
 {% endblock %}

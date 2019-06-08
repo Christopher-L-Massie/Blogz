@@ -2,6 +2,7 @@
 from flask import Flask, request, redirect, render_template, session, flash
 from flask_sqlalchemy import SQLAlchemy
 
+
 #app setup and config settings
 app = Flask(__name__)
 app.config['DEBUG'] = True
@@ -34,6 +35,7 @@ def index():
 @app.route('/blog', methods=['POST','GET'])
 def blog():
     blog_post = Blog.query.all()
+    
     #this line could be better it handles pulling an id if the user has given me one
     if request.method == 'GET':
         blog_id = request.args.get('id')
