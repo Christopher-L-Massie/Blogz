@@ -29,6 +29,24 @@
                             {{post.body}}
                         </p>
                     </div>
+                    <div class="reaction">
+                        <span>
+                        <div class="likes">
+                            <a href="blog?id={{post.id}}&like=True">
+                                <img src="/static/images/like_icon.png">
+                                
+                            </a>
+                            <span>{{post.likes}}</span>
+                        </div>
+                        <div class="dislikes>">
+                            <a href="blog?id={{post.id}}&dislike=True">
+                                <img src="/static/images/dislike_icon.png">
+                                
+                            </a>
+                            <span>{{post.dislikes}}</span>
+                        </div>
+                        </span>
+                    </div>
                 </div>
             {% endfor %}
 

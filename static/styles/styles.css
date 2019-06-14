@@ -106,3 +106,16 @@
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
   transform: translateY(4px);
 }
+
+.reaction {
+    display:table-cell;
+    margin-left:50%;
+    text-align:center;
+    
+}
+
+.reaction img {
+    display:inline-block;
+    height:15px;
+    
+}

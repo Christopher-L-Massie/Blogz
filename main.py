@@ -18,11 +18,15 @@ class Blog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120))
     body = db.Column(db.String(40000))
+    likes = db.Column(db.Integer)
+    dislikes = db.Column(db.Integer)
     
     #initilizes the blog post
-    def __init__(self, title, body):
+    def __init__(self, title, body, likes, dislikes):
         self.title = title
         self.body = body
+        self.likes = likes
+        self.dislikes = dislikes
 
 #if someone accesses the root of the website they're redirected to the blog route
 @app.route('/', methods=['POST','GET'])
@@ -34,20 +38,38 @@ def index():
 #todo- add sorting function
 @app.route('/blog', methods=['POST','GET'])
 def blog():
+    #This sets up a few variables used throughout and looks for any query parameters
+    #it then turns into some if statements that do different things depending on 
+    #the query parameters
     blog_post = Blog.query.all()
     newest_post_first = Blog.query.order_by(Blog.id.desc()).all()
-    print(newest_post_first)
-    #this line could be better it handles pulling an id if the user has given me one
-    if request.method == 'GET':
-        blog_id = request.args.get('id')
-        #this checks if there is even a blog id argument and then renders a page for the post clicked by the user
-        if blog_id:
-            requested_post = Blog.query.get(blog_id)
-             
-            return render_template('post.html',title="Post",blog_title=requested_post.title,body=requested_post.body)
+    blog_id = request.args.get('id')
+    add_like = request.args.get('like')
+    add_dislike = request.args.get('dislike')
+    
+    #when a blog id and dislike button has been clicked in html (checks if the add dislike param is true)
+    #if these two parameters have been given then a dislike is added
+    if request.method == 'GET' and blog_id and add_dislike and not add_like:
+        add_dislike = Blog.query.get(blog_id)
+        add_dislike.dislikes = add_dislike.dislikes + 1
+        db.session.commit()
+        return render_template('blog.html',title="Blog",blog=newest_post_first)   
+        
+    #this if statement looks to see if a blog id is given and if the user liked the post
+    if request.method == 'GET' and blog_id and add_like and not add_dislike:
+        add_like = Blog.query.get(blog_id)
+        add_like.likes = add_like.likes + 1
+        db.session.commit()
+        return render_template('blog.html',title="Blog",blog=newest_post_first)
+    
+    #this checks if there is only a blog id argument and then renders a page for the post clicked by the user
+    if request.method == 'GET' and blog_id and not add_like and not add_dislike:
+        requested_post = Blog.query.get(blog_id)
+        return render_template('post.html',title="Post",blog_title=requested_post.title,body=requested_post.body)
     
     #this is how the page renders if no arguments are given in the url
-    return render_template('blog.html',title="Blog",blog=newest_post_first)
+    if request.method == 'GET':
+        return render_template('blog.html',title="Blog",blog=newest_post_first)
 
 #renders the new post page where anybody can create a new post for the blog
 @app.route('/newpost', methods=['POST','GET'])
@@ -69,7 +91,7 @@ def newpost():
     if request.method == 'POST':
         blog_title = request.form['blog_post_title']
         blog_content = request.form['blog_post_content']
-        new_blog_post = Blog(blog_title, blog_content) 
+        new_blog_post = Blog(blog_title, blog_content, 0, 0) 
     
     #validation to make sure a blog title and body are given
     #error message given if forgotten
