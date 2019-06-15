@@ -8,35 +8,36 @@
     margin-top:0px;
 }
 .header {
-    position: fixed;
-    background-color:white;
-    border-width:1px;
-    top: 0;
+    display: flex;
+    
     background-position: center;
     margin: 0;
     width: 100%;
-    font-family:verdana;
-    font-size: 15px;
-    text-align: right;
-    display: inline-block;
+    
+    font-size: 13px;
+    text-align: center;
     color:white;
-    z-index:999;
+    
     
 }
 
 .blog_post {
-    color:black;
-    margin-left:5%;
+   
+    margin-left:25%;
     margin-right:5%;
     position:relative;
     margin-top:50px;
+    
     text-align:center;
     border-style:solid;
     border-width:5px;
-    border-color:#68f5c6;
+   
     background-color:white;
     border-radius: 15px;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    width:50%;
+    padding: 10px;
+    
     
     
 }
@@ -44,35 +45,42 @@
 .post_creator {
     background-position: center;
     display:block;
-    
+    border-style:solid;
+    margin-right:15%;
+    margin-left:15%;
     text-align:center;
+    color:black;
+    padding: 50px;
+    
+    position:relative;
+    margin-top:50px;
+    margin-bottom:50px;
+    text-align:center;
+    border-style:solid;
+    border-width:5px;
+    border-color:#000000;
+    background-color:white;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
 
 .page_title {
-    position: fixed;
-    top:17px;
-    width: 100%;
     text-align: center;
-    color:black;
-    border-width:15px;
-    background-color:white;
-    border-color:#0f3cb5;
-    z-index:999;
-    border-radius: 15px;
+    color:white;
+    background-color:black;
+    bottom:0;
+    margin:0;
+    width:50%;
+    display:inline-block;
     
 }
 
 .home_page {
-    position: fixed;
-    top: 0;
-    color: white;
-    font-size: 15px;
-    text-align: left;
-    margin: 0;
+    
 }
 
 .spacer {
-    margin-top:125px;
+    margin-top:200px;
 }
 
 .creator_object {
@@ -108,7 +116,7 @@
 }
 
 .reaction {
-    display:table-cell;
+    display:inline;
     margin-left:50%;
     text-align:center;
     
@@ -118,4 +126,152 @@
     display:inline-block;
     height:15px;
     
+}
+
+.no_content {
+    text-align: center;
+}
+
+
+ /* Dropdown Button */
+.dropbtn {
+  display: inline-block;  
+  background-color: #000000;
+  width:100%;
+  border: 3px solid #000000;
+  margin: 0;
+  padding: 16px;
+  font-size: 16px;
+  color:white;
+}
+
+.dropdown {
+  position:relative;
+  display:inline-block;
+    width:50%;
+  
+  color:white;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: relative;
+  background-color: #000000;
+  min-width: 160px;
+  color:black;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: white;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: inline-block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+    display: inline-block; 
+    
+
+}
+.homepage:hover {
+    cursor: pointer;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {background-color: #000000;} 
+
+
+
+
+
+#page_title:hover {
+    cursor: pointer;
+    cursor: pointer;
+    
+}
+
+#usersignup {
+    
+    
+    margin-left:25%;
+    margin-right:25%;
+  
+}
+
+#usersignupform {
+    margin-left:13%;
+}
+
+.create_account {
+    color:black;
+    padding: 50px;
+    
+    position:relative;
+    margin-top:50px;
+    margin-bottom:50px;
+    text-align:center;
+    border-style:solid;
+    border-width:5px;
+    border-color:#000000;
+    background-color:white;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+
+
+
+#loginbtn {
+    margin-right:20%
+}
+
+.login_table {
+    margin-left:10%;
+}
+
+#create_submit {
+    margin-right:10%;
+}
+
+.flash_messages {
+    text-align:center;
+    list-style: none;
+    list-style-type: none;
+    
+}
+
+
+.all_blog_post {
+   
+}
+
+.post_bottom {
+    display:inline-block;
+}
+
+.user_direc {
+    margin-left:25%;
+    margin-right:5%;
+    position:relative;
+    margin-top:50px;
+    
+    text-align:center;
+    border-style:solid;
+    border-width:5px;
+   
+    background-color:white;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    width:50%;
+    padding: 10px;
 }

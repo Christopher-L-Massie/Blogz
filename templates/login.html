@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="create_account" id="usersignup">
+    <h1>Log in to your Account</h1>
+    <p>If you don't have an account, you may <a href="/signup">register</a> for one</p>
+    <form  id="usersignupform" action="/login" method="post">
+        <div class="login_table">
+        <table>
+            <tr>
+                <div class="creator_object">
+                    <td>
+                        <label for="username">Username</label>
+                    </td>
+                    <td>
+                        <input name="username" type="text" value="{{ username }}">
+                    </td>
+                    <td>
+                        <!-- Username Error message -->
+                        <p class="error">{{username_error}}</p>
+                    </td>
+                </div>
+            </tr>
+            <tr>
+                <div class="creator_object">
+                    <td>
+                        <label for="password">Password</label>
+                    </td>
+                    <td>
+                        <input name="password" type="password">
+                    </td>
+                    <td>
+                        <!-- Password Error message -->
+                        <p class="error">{{password_error}}</p>
+                    </td>
+                </div>
+            </tr>
+        </table>
+        </div>
+        <div class="submit_post" id="loginbtn">
+            <input type="submit" value="Login">
+        </div>
+    </form>
+</div>
+{% endblock %}

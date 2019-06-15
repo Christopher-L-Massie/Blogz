@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="create_account" id="usersignup">
+    <h1>Sign up for an Account</h1>
+    <form id="usersignupform" method='POST'>
+        <table >
+            <tbody>
+                <tr>
+                    <td>
+                        <label>Username:</label>
+                    </td>
+                    <td>
+                        <input type="text" name="username" value='{{username}}'>
+                    </td>
+                    <td>
+                        <!-- usernam Error message (min 3 max 20 characters) -->
+                        <p class="error">{{username_error}}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Password:</label>
+                    </td>
+                    <td>
+                        <input type="password" name="pass">
+                    </td>
+                    <td>
+                        <!-- invalid password Error message (too short) -->
+                        <p class="error">{{password_error}}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Verify Password:</label>
+                    </td>
+                    <td>
+                        <input type="password" name="verifypass">
+                    </td>
+                    <td>
+                        <!-- Password don't match Error message -->
+                        <p class="error">{{verify_password_error}}</p>
+                    </td>
+                </tr>
+                
+                
+               
+            </tbody>
+        </table>
+        <br>
+        <div class="submit_post" id="create_submit">
+            <input type="submit" value="Create Account">
+        </div>
+    </form>
+</div>
+{% endblock %}

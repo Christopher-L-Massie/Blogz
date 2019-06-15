@@ -2,17 +2,52 @@
 <html>
     <head >
         <title>{{title}}</title>
-        <link rel="stylesheet" type="text/css" href='static/styles/styles.css'>
+        <link  rel="stylesheet" type="text/css" href="static/styles/styles.css" >
     </head>
 
 <body>
     <div class="header">
-        <a href='/newpost'>Create Post</a>
-        <div class="home_page">
-        <a href='/'>Home Page</a>
+        <div class="dropdown">
+            <button class="dropbtn">Navigation</button>
+                <div class="dropdown-content">
+                    <li>
+				        <a href="/blog">All Blog Post</a>
+				    </li>
+                    <li>
+				        <a href="/">User Directory</a>
+				    </li>
+                </div>
+        </div>
+        <div class="dropdown">
+            <a href="/"><button class="dropbtn" id="page_title">{{page_title}}</button></a>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Options</button>
+                <div class="dropdown-content">
+                    <li>
+					   <a href="/newpost">Create Post</a>
+				    </li>
+                    <li>
+					   <a href="/signup">Create Account</a>
+				    </li>
+                    <li>
+					   <a href="/login">Log in</a>
+				    </li>
+                    <li>
+                        <a href="/logout">Log out</a>
+                    </li>
+                </div>
         </div>
     </div>
-
+    <div class="flash_messages">
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            <ul>
+            {% for category,message in messages %}
+                <li class="{{category}}">{{message}}</li>
+            {% endfor %}
+            </ul>
+        {% endwith %}
+    </div>
     {% block content %}
     {% endblock %}
 

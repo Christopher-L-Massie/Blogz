@@ -2,7 +2,44 @@
 
 {% block content %}
     <div class="blog_post">
-    <h1>{{blog_title}}</h1>
-    <p>{{body}}</p>
-    </div>
+                        <div class="blog_title">
+                            <a href="">
+                                <h1>
+                                {{blog_title}}
+                                </h1>
+                            </a>
+                        </div>
+                        <div class="blog_content">
+                            <p>
+                                {{blog_content}}
+                            </p>
+                        </div>
+                        <div class="post_bottom">
+                            <div class="owner">
+                                <p>
+                                    Written by: 
+                                    <a href="blog?user={{owner_id}}">
+                                        {{post_owner}}
+                                    </a>
+                                </p>
+                            </div>
+                            <div class="reaction">
+                                <span>
+                                <div class="likes">
+                                    <a href="blog?user={{owner_id}}&id={{blog_id}}&like=True">
+                                        <img src="/static/images/like_icon.png">
+
+                                    </a>
+                                    <span>{{post_likes}}</span>
+                                </div>
+                                <div class="dislikes>">
+                                    <a href="blog?user={{owner_id}}&id={{blog_id}}&dislike=True">
+                                        <img src="/static/images/dislike_icon.png">
+
+                                    </a>
+                                    <span>{{post_dislikes}}</span>
+                                </div>
+                                </span>
+                            </div>
+                        </div>
 {% endblock %}

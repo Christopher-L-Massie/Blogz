@@ -2,53 +2,58 @@
 
 {% block content %}
 
-    <div class="page_title">
-    <h1>Build a Blog</h1>
-        
-    </div>
+    
     
 
     {% if blog|length == 0 %}
-    <h1>Blog Content Coming Soon!!</h1>
+    <h1 class="no_content">Blog Content Coming Soon!!</h1>
     {% else %}
-        <div class="spacer">
-        <p></p>
-        </div>
-            {% for post in blog %}
-                
-                <div class="blog_post">
-                    <div class="blog_title">
-                        <a href="blog?id={{post.id}}">
-                            <h1>
-                            {{post.title}}
-                            </h1>
-                        </a>
-                    </div>
-                    <div class="blog_content">
-                        <p>
-                            {{post.body}}
-                        </p>
-                    </div>
-                    <div class="reaction">
-                        <span>
-                        <div class="likes">
-                            <a href="blog?id={{post.id}}&like=True">
-                                <img src="/static/images/like_icon.png">
-                                
+            <div class="all_blog_post">
+                {% for post in blog %}
+
+                    <div class="blog_post">
+                        <div class="blog_title">
+                            <a href="blog?id={{post.id}}">
+                                <h1>
+                                {{post.title}}
+                                </h1>
                             </a>
-                            <span>{{post.likes}}</span>
                         </div>
-                        <div class="dislikes>">
-                            <a href="blog?id={{post.id}}&dislike=True">
-                                <img src="/static/images/dislike_icon.png">
-                                
-                            </a>
-                            <span>{{post.dislikes}}</span>
+                        <div class="blog_content">
+                            <p>
+                                {{post.body}}
+                            </p>
                         </div>
-                        </span>
+                        <div class="post_bottom">
+                            <div class="owner">
+                                <p>
+                                    Written by: 
+                                    <a href="blog?user={{post.owner.id}}">{{post.owner.username}}
+                                    </a>
+                                </p>
+                            </div>
+                            <div class="reaction">
+                                <span>
+                                <div class="likes">
+                                    <a href="blog?id={{post.id}}&like=True">
+                                        <img src="/static/images/like_icon.png">
+
+                                    </a>
+                                    <span>{{post.likes}}</span>
+                                </div>
+                                <div class="dislikes>">
+                                    <a href="blog?id={{post.id}}&dislike=True">
+                                        <img src="/static/images/dislike_icon.png">
+
+                                    </a>
+                                    <span>{{post.dislikes}}</span>
+                                </div>
+                                </span>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            {% endfor %}
+                {% endfor %}
+            </div>
 
 
 
