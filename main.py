@@ -1,6 +1,7 @@
 #imports
 from flask import Flask, request, redirect, render_template, session, flash
 from flask_sqlalchemy import SQLAlchemy
+from hashutils import make_pw_hash, check_pw_hash
 
 
 #app setup and config settings
@@ -39,21 +40,33 @@ class Blog(db.Model):
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(28), unique=True)
-    password = db.Column(db.String(28))
+    pw_hash = db.Column(db.String(500))
     blogs = db.relationship('Blog', backref='owner')
     
     #initilizes the user
     def __init__(self, username, password):
         self.username = username
-        self.password = password
+        self.pw_hash = make_pw_hash(password)
+    
+"""
+This code breaks the css of the page for users that have not logged into the browser during their current session.
+If the user logs in and out the css will continue to work but if the browser is closed and opened again. Then the css
+will stop working until the user has logged in again.
+
+
+If you comment out the @app.before_request function the website will work correctly apart from users being able to manually go to page urls to create post without being logged in.
+|
+V
+"""
     
 #This makes certain pages, namely the post creation page inacessible unless you've logged into the website
 
 @app.before_request
 def require_login():
-    allow_routes = ['login', 'signup', 'blog', 'index']
+    allow_routes = ['login', 'signup', 'blog', 'index','base']
     if request.endpoint not in allow_routes and 'username' not in session:
         return redirect('/login')
+
 
 
 
@@ -61,7 +74,7 @@ def require_login():
 @app.route('/', methods=['POST','GET'])
 def index():
     users = User.query.all()
-    return render_template('index.html',title="Home Page", page_title="Home Page",users=users)
+    return render_template('index.html',title="Home Page", session=session, page_title="Home Page",users=users)
         
 #renders the main blog page, pulling all items from the blog db and rendering them dynamically 
 #todo- add sorting function
@@ -81,7 +94,7 @@ def blog():
     #handles when a user wants to look at a specific users post history
     if request.method == 'GET' and user_id and not blog_id and not add_dislike and not add_like:
         requested_user_post = Blog.query.filter_by(owner_id=user_id).all()
-        return render_template('blog.html',title="Blog",blog=requested_user_post,page_title="Build-a-Blog")
+        return render_template('blog.html',title="Blog", session=session, blog=requested_user_post,page_title="Build-a-Blog")
     
     
     #when a blog id and dislike button has been clicked in html (checks if the add dislike param is true)
@@ -90,14 +103,14 @@ def blog():
         add_dislike = Blog.query.get(blog_id)
         add_dislike.dislikes = add_dislike.dislikes + 1
         db.session.commit()
-        return render_template('blog.html',title="Blog",blog=newest_post_first,page_title="Build-a-Blog")   
+        return render_template('blog.html',title="Blog", session=session, blog=newest_post_first,page_title="Build-a-Blog")   
         
     #this if statement looks to see if a blog id is given and if the user liked the post
     if request.method == 'GET' and blog_id and add_like and not add_dislike and not user_id:
         add_like = Blog.query.get(blog_id)
         add_like.likes = add_like.likes + 1
         db.session.commit()
-        return render_template('blog.html',title="Blog",blog=newest_post_first,page_title="Build-a-Blog")
+        return render_template('blog.html',title="Blog", session=session, blog=newest_post_first,page_title="Build-a-Blog")
     
     #updates individual post likes without returning to blog
     if request.method == 'GET' and blog_id and user_id and add_like and not add_dislike:
@@ -105,7 +118,7 @@ def blog():
         add_like.likes = add_like.likes + 1
         db.session.commit()
         requested_post = Blog.query.get(blog_id)
-        return render_template('post.html',title="Post",page_title="Blog Post",blog_title=requested_post.title,blog_content=requested_post.body,post_owner=requested_post.owner.username,owner_id=requested_post.owner_id,post_likes=requested_post.likes,post_dislikes=requested_post.dislikes,blog_id=requested_post.id)
+        return render_template('post.html',title="Post",session=session,page_title="Blog Post",blog_title=requested_post.title,blog_content=requested_post.body,post_owner=requested_post.owner.username,owner_id=requested_post.owner_id,post_likes=requested_post.likes,post_dislikes=requested_post.dislikes,blog_id=requested_post.id)
     
     #updates individual post dislikes without returning to blog
     if request.method == 'GET' and blog_id and user_id and add_dislike and not add_like:
@@ -113,7 +126,7 @@ def blog():
         add_dislike.dislikes = add_dislike.dislikes + 1
         db.session.commit()
         requested_post = Blog.query.get(blog_id)
-        return render_template('post.html',title="Post",page_title="Blog Post",blog_title=requested_post.title,blog_content=requested_post.body,post_owner=requested_post.owner.username,owner_id=requested_post.owner_id,post_likes=requested_post.likes,post_dislikes=requested_post.dislikes,blog_id=requested_post.id)
+        return render_template('post.html',title="Post",session=session,page_title="Blog Post",blog_title=requested_post.title,blog_content=requested_post.body,post_owner=requested_post.owner.username,owner_id=requested_post.owner_id,post_likes=requested_post.likes,post_dislikes=requested_post.dislikes,blog_id=requested_post.id)
     #####
     #####
     #####
@@ -123,16 +136,16 @@ def blog():
         add_like.likes = add_like.likes + 1
         db.session.commit()
         requested_user_post = Blog.query.filter_by(owner_id=user_id).all()
-        return render_template('blog.html',title="Blog",blog=requested_user_post,page_title="Build-a-Blog")
+        return render_template('blog.html',title="Blog",session=session,blog=requested_user_post,page_title="Build-a-Blog")
     
     #this checks if there is only a blog id argument and then renders a page for the post clicked by the user
     if request.method == 'GET' and blog_id and not add_like and not add_dislike and not user_id:
         requested_post = Blog.query.get(blog_id)
-        return render_template('post.html',title="Post",page_title="Blog Post",blog_title=requested_post.title,blog_content=requested_post.body,post_owner=requested_post.owner.username,owner_id=requested_post.owner_id,post_likes=requested_post.likes,post_dislikes=requested_post.dislikes,blog_id=requested_post.id)
+        return render_template('post.html',title="Post",session=session,page_title="Blog Post",blog_title=requested_post.title,blog_content=requested_post.body,post_owner=requested_post.owner.username,owner_id=requested_post.owner_id,post_likes=requested_post.likes,post_dislikes=requested_post.dislikes,blog_id=requested_post.id)
     
     #this is how the page renders if no arguments are given in the url
     if request.method == 'GET':
-        return render_template('blog.html',title="Blog",blog=newest_post_first,page_title="Build-a-Blog")
+        return render_template('blog.html',title="Blog",session=session,blog=newest_post_first,page_title="Build-a-Blog")
 
 #renders the new post page where anybody can create a new post for the blog
 @app.route('/newpost', methods=['POST','GET'])
@@ -146,7 +159,7 @@ def newpost():
     
     #load the page for the user with no error messages
     if request.method == 'GET':
-        return render_template('newpost.html',title="Create Post", title_error=title_error,content_error=content_error
+        return render_template('newpost.html',title="Create Post",session=session, title_error=title_error,content_error=content_error
                            ,blog_post_title=blog_title,blog_post_content=blog_content,page_title="Create a Blog Post")
     
     #when the user hits the post button on the page their information is taken and
@@ -175,7 +188,7 @@ def newpost():
         return redirect('/blog?id={0}'.format(str(post_id)))
     
     #render the page with helpful error messages           
-    return render_template('newpost.html',title="Create Post", title_error=title_error,content_error=content_error
+    return render_template('newpost.html',title="Create Post",session=session, title_error=title_error,content_error=content_error
                            ,blog_post_title=blog_title,blog_post_content=blog_content,page_title="Create a Blog Post")
 
 #this page handles everything to do with user signup including catching errors and commiting
@@ -231,7 +244,7 @@ def signup():
             else:
                 username_error = "Username in use"     
     #this loads the page initially for the user
-    return render_template('signup.html', title="Sign up Page", page_title="Create Account",username_error=username_error,password_error=password_error,verify_password_error=verify_password_error)
+    return render_template('signup.html', title="Sign up Page",session=session, page_title="Create Account",username_error=username_error,password_error=password_error,verify_password_error=verify_password_error)
 
 #this route handles returning users logging into the website
 #with needed validation and error messages displayed to help the user
@@ -253,24 +266,24 @@ def login():
             flash("Username does not exist","error")
             username_error="Invalid Username"
             #rerender the page with appropriate error messages
-            return render_template('login.html', title="Login Page", page_title="Log in",username_error=username_error,password_error=password_error)
+            return render_template('login.html', title="Login Page",session=session, page_title="Log in",username_error=username_error,password_error=password_error)
         #if they entered a password that does not match the password on file
         #the user is alerted that they have not entered the correct password
-        if user and user.password != password:
+        if user and not check_pw_hash(password, user.pw_hash):
             flash("Incorrect Password", "error")
             password_error="Incorrect Password"
             #rerender the page with appropriate error messages
-            return render_template('login.html', title="Login Page", page_title="Log in",username_error=username_error,password_error=password_error,username=username)
+            return render_template('login.html', title="Login Page",session=session, page_title="Log in",username_error=username_error,password_error=password_error,username=username)
         #if the username exist and they have entered the password for that user correctly then
         #they are logged in and alerted that it worked
-        if user and user.password == password:
+        if user and check_pw_hash(password, user.pw_hash):
             session['username'] = username
             flash("Logged in")
             return redirect('/newpost')
         else:
             flash('User password incorrect, or user does not exist', 'error')
     #this loads the page initially for the user                               
-    return render_template('login.html', title="Login Page", page_title="Log in")
+    return render_template('login.html', title="Login Page",session=session, page_title="Log in")
 
 #logs the user out and lets them know the action was succesfull
 @app.route('/logout')
