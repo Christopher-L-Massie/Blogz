@@ -1,5 +1,5 @@
 #imports
-from flask import Flask, request, redirect, render_template, session, flash
+from flask import Flask, request, redirect, render_template, session, flash, abort
 from flask_sqlalchemy import SQLAlchemy
 from hashutils import make_pw_hash, check_pw_hash
 
@@ -63,7 +63,7 @@ V
 
 @app.before_request
 def require_login():
-    allow_routes = ['login', 'signup', 'blog', 'index','base']
+    allow_routes = ['login', 'signup', 'blog', 'index','base','/']
     if request.endpoint not in allow_routes and 'username' not in session:
         return redirect('/login')
 

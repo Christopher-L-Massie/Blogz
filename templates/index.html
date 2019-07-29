@@ -1,13 +1,17 @@
 {% extends "base.html" %}
 
 {% block content %}
-<link  rel="stylesheet" type="text/css" href="static/styles/styles.css" >
+
     <div class="user_direc">
         <h1>Users</h1>
         <ul>
+        {% if users|length > 0 %}
         {% for user in users %}
         <li><a href="/blog?user={{user.id}}">{{user.username}}</a></li>
         {% endfor %}
+        {% else %}
+        <h1>This site has no users!</h1>
+        {% endif %}
         </ul>
     </div>
 {% endblock %}
